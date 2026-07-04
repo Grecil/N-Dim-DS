@@ -1,17 +1,15 @@
 #pragma once
-#include <vector>
-#include <stdexcept>
-#include <cstdint>
-#include <algorithm>
+#include <bits/stdc++.h>
+using namespace std;
 
 namespace ndim {
 
 template <typename T = int64_t>
 class StaticNDimPrefixSum {
 public:
-    StaticNDimPrefixSum(const std::vector<int>& dims) : dims_(dims), n_(dims.size()), is_swept_(false) {
+    StaticNDimPrefixSum(const vector<int>& dims) : dims_(dims), n_(dims.size()), is_swept_(false) {
         if (dims.empty()) {
-            throw std::invalid_argument("Dimensions cannot be empty");
+            throw invalid_argument("Dimensions cannot be empty");
         }
         strides_.resize(n_, 1);
         for (int i = n_ - 2; i >= 0; --i) {
@@ -21,17 +19,17 @@ public:
         arr_.assign(total_size_, T{0});
     }
 
-    void add(const std::vector<int>& coords, T val) {
+    void add(const vector<int>& coords, T val) {
         if (is_swept_) {
-            throw std::runtime_error("Cannot add points after the grid has been swept.");
+            throw runtime_error("Cannot add points after the grid has been swept.");
         }
         if (coords.size() != n_) {
-            throw std::invalid_argument("Coordinates must match the number of dimensions");
+            throw invalid_argument("Coordinates must match the number of dimensions");
         }
         size_t idx = 0;
         for (size_t d = 0; d < n_; ++d) {
             if (coords[d] < 0 || coords[d] >= dims_[d]) {
-                throw std::out_of_range("Coordinate out of bounds");
+                throw out_of_range("Coordinate out of bounds");
             }
             idx += coords[d] * strides_[d];
         }
@@ -51,12 +49,12 @@ public:
         is_swept_ = true;
     }
 
-    T query_range(const std::vector<int>& x_coords, const std::vector<int>& y_coords) const {
+    T query_range(const vector<int>& x_coords, const vector<int>& y_coords) const {
         if (!is_swept_) {
-            throw std::runtime_error("Must call sweep() before querying.");
+            throw runtime_error("Must call sweep() before querying.");
         }
         if (x_coords.size() != n_ || y_coords.size() != n_) {
-            throw std::invalid_argument("Coordinates must match the number of dimensions");
+            throw invalid_argument("Coordinates must match the number of dimensions");
         }
         T ans = 0;
         size_t num_masks = 1ULL << n_;
@@ -74,7 +72,7 @@ public:
                     idx += c * strides_[d];
                     sign = -sign;
                 } else {
-                    int c = std::min(y_coords[d], dims_[d] - 1);
+                    int c = min(y_coords[d], dims_[d] - 1);
                     idx += c * strides_[d];
                 }
             }
@@ -87,11 +85,11 @@ public:
     }
 
 private:
-    std::vector<int> dims_;
+    vector<int> dims_;
     size_t n_;
-    std::vector<size_t> strides_;
+    vector<size_t> strides_;
     size_t total_size_;
-    std::vector<T> arr_;
+    vector<T> arr_;
     bool is_swept_;
 };
 

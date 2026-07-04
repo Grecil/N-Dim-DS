@@ -1,19 +1,16 @@
 #pragma once
-#include <vector>
-#include <stdexcept>
-#include <cstdint>
-#include <functional>
-#include <algorithm>
+#include <bits/stdc++.h>
+using namespace std;
 
 namespace ndim {
 
-template <typename T = int64_t, typename Func = std::function<T(T, T)>>
+template <typename T = int64_t, typename Func = function<T(T, T)>>
 class DynamicNDimSegTree {
 public:
-    DynamicNDimSegTree(const std::vector<int>& dims, Func func, T default_val)
+    DynamicNDimSegTree(const vector<int>& dims, Func func, T default_val)
         : dims_(dims), n_(dims.size()), func_(func), default_(default_val) {
         if (dims.empty()) {
-            throw std::invalid_argument("Dimensions cannot be empty");
+            throw invalid_argument("Dimensions cannot be empty");
         }
         sizes_.resize(n_);
         for (size_t i = 0; i < n_; ++i) {
@@ -29,16 +26,16 @@ public:
         arr_.assign(total_size_, default_);
     }
 
-    void update(const std::vector<int>& coords, T val) {
+    void update(const vector<int>& coords, T val) {
         if (coords.size() != n_) {
-            throw std::invalid_argument("Coordinates must match dimensions");
+            throw invalid_argument("Coordinates must match dimensions");
         }
-        std::vector<int> leaf_coords(n_);
+        vector<int> leaf_coords(n_);
         for (size_t d = 0; d < n_; ++d) {
             leaf_coords[d] = coords[d] + dims_[d];
         }
 
-        std::vector<std::vector<int>> paths(n_);
+        vector<vector<int>> paths(n_);
         for (size_t d = 0; d < n_; ++d) {
             int p = leaf_coords[d];
             while (p >= 1) {
@@ -47,10 +44,10 @@ public:
             }
         }
 
-        std::vector<size_t> current_indices(n_, 0);
+        vector<size_t> current_indices(n_, 0);
         while (true) {
             size_t idx = 0;
-            std::vector<int> p_tuple(n_);
+            vector<int> p_tuple(n_);
             for (size_t d = 0; d < n_; ++d) {
                 p_tuple[d] = paths[d][current_indices[d]];
                 idx += p_tuple[d] * strides_[d];
@@ -82,12 +79,12 @@ public:
         }
     }
 
-    T query_range(const std::vector<int>& x_coords, const std::vector<int>& y_coords) const {
+    T query_range(const vector<int>& x_coords, const vector<int>& y_coords) const {
         if (x_coords.size() != n_ || y_coords.size() != n_) {
-            throw std::invalid_argument("Coordinates must match dimensions");
+            throw invalid_argument("Coordinates must match dimensions");
         }
         
-        std::vector<std::vector<size_t>> dim_nodes(n_);
+        vector<vector<size_t>> dim_nodes(n_);
         for (size_t d = 0; d < n_; ++d) {
             if (x_coords[d] > y_coords[d]) return default_;
 
@@ -110,7 +107,7 @@ public:
         }
 
         T res = default_;
-        std::vector<size_t> current_indices(n_, 0);
+        vector<size_t> current_indices(n_, 0);
         while (true) {
             size_t idx = 0;
             for (size_t d = 0; d < n_; ++d) {
@@ -131,12 +128,12 @@ public:
     }
 
 private:
-    std::vector<int> dims_;
+    vector<int> dims_;
     size_t n_;
-    std::vector<int> sizes_;
-    std::vector<size_t> strides_;
+    vector<int> sizes_;
+    vector<size_t> strides_;
     size_t total_size_;
-    std::vector<T> arr_;
+    vector<T> arr_;
     Func func_;
     T default_;
 };
