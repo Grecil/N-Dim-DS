@@ -1,5 +1,5 @@
 [project]
-name = "n-dim-data-structures"
+name = "ndim_ds"
 version = "0.1.0"
 description = "A collection of optimized N-dimensional data structures in Python"
 readme = "README.md"

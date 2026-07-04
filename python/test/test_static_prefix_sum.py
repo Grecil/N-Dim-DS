@@ -2,7 +2,6 @@ import itertools
 import random
 
 import pytest
-
 from static_n_dim_prefix_sum import StaticNDimPrefixSum
 
 
