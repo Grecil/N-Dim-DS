@@ -3,11 +3,22 @@
 
 namespace ndim {
 
+/**
+ * A dynamic N-dimensional Difference Fenwick Tree (Binary Indexed Tree).
+ * Supports O(log^N(V)) range updates and point queries across N dimensions.
+ * Purpose: Efficiently adds a value to a hyper-rectangular region and queries the value at a specific point.
+ */
 template <typename T = long long>
 class DynamicNDimDiffFenwickTree {
 public:
     DynamicNDimDiffFenwickTree(const vector<int>& dims) : n_(dims.size()), tree_(dims), dims_(dims) {}
 
+    /**
+     * @brief Adds a value to a hyper-rectangular bounding box.
+     * @param x_coords 0-based starting indices (lower bounds).
+     * @param y_coords 0-based ending indices (inclusive upper bounds).
+     * @param val Value to add to the range.
+     */
     void add_range(const vector<int>& x_coords, const vector<int>& y_coords, T val) {
         if (x_coords.size() != n_ || y_coords.size() != n_) {
             throw invalid_argument("Coordinates must match dimensions");
@@ -37,6 +48,11 @@ public:
         }
     }
 
+    /**
+     * @brief Queries the value at a specific point.
+     * @param coords 0-based point coordinates.
+     * @return T The value at the point.
+     */
     T query_point(const vector<int>& coords) const {
         return tree_.query_prefix(coords);
     }

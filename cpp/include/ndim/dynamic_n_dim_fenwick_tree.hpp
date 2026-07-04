@@ -4,6 +4,11 @@ using namespace std;
 
 namespace ndim {
 
+/**
+ * A dynamic N-dimensional Fenwick Tree (Binary Indexed Tree).
+ * Supports O(log^N(V)) point updates and prefix sum queries across N dimensions.
+ * Purpose: Efficiently updates individual elements and computes the sum of elements in an N-dimensional prefix.
+ */
 template <typename T = long long>
 class DynamicNDimFenwickTree {
 public:
@@ -19,6 +24,11 @@ public:
         arr_.assign(total_size_, T{0});
     }
 
+    /**
+     * @brief Adds a value to a specific point.
+     * @param coords 0-based point coordinates.
+     * @param val Value to add.
+     */
     void add(const vector<int>& coords, T val) {
         if (coords.size() != n_) {
             throw invalid_argument("Coordinates must match dimensions");
@@ -50,6 +60,11 @@ public:
         }
     }
 
+    /**
+     * @brief Queries the prefix sum from origin to the given point.
+     * @param coords 0-based ending point of the prefix (inclusive).
+     * @return T The prefix sum.
+     */
     T query_prefix(const vector<int>& coords) const {
         vector<vector<size_t>> dim_indices(n_);
         for (size_t d = 0; d < n_; ++d) {
@@ -81,6 +96,12 @@ public:
         return res;
     }
 
+    /**
+     * @brief Queries the sum within a hyper-rectangular bounding box.
+     * @param x_coords 0-based starting indices (lower bounds) of the bounding box.
+     * @param y_coords 0-based ending indices (inclusive upper bounds) of the bounding box.
+     * @return T The sum within the range.
+     */
     T query_range(const vector<int>& x_coords, const vector<int>& y_coords) const {
         if (x_coords.size() != n_ || y_coords.size() != n_) {
             throw invalid_argument("Coordinates must match dimensions");

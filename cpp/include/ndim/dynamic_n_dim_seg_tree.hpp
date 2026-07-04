@@ -4,6 +4,12 @@ using namespace std;
 
 namespace ndim {
 
+/**
+ * A dynamic N-dimensional Segment Tree.
+ * Supports O(log^N(V)) point updates and range queries across N dimensions.
+ * Purpose: Efficiently updates individual elements and queries associative operations (e.g. min, max, gcd) over a hyper-rectangular region.
+ * Used when operations are not strictly invertible (unlike Fenwick trees which require subtraction).
+ */
 template <typename T = long long, typename Func = function<T(T, T)>>
 class DynamicNDimSegTree {
 public:
@@ -26,6 +32,11 @@ public:
         arr_.assign(total_size_, default_);
     }
 
+    /**
+     * @brief Updates the value at a specific point.
+     * @param coords 0-based point coordinates.
+     * @param val New value to set at the point.
+     */
     void update(const vector<int>& coords, T val) {
         if (coords.size() != n_) {
             throw invalid_argument("Coordinates must match dimensions");
@@ -79,6 +90,12 @@ public:
         }
     }
 
+    /**
+     * @brief Queries the aggregate function result over a hyper-rectangular bounding box.
+     * @param x_coords 0-based starting indices (lower bounds).
+     * @param y_coords 0-based ending indices (inclusive upper bounds).
+     * @return T The result of the associative function over the range.
+     */
     T query_range(const vector<int>& x_coords, const vector<int>& y_coords) const {
         if (x_coords.size() != n_ || y_coords.size() != n_) {
             throw invalid_argument("Coordinates must match dimensions");

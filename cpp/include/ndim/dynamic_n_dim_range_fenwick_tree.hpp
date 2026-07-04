@@ -4,6 +4,12 @@ using namespace std;
 
 namespace ndim {
 
+/**
+ * A dynamic N-dimensional Range Fenwick Tree.
+ * Supports O(log^N(V)) range updates and range sum queries across N dimensions.
+ * Purpose: Efficiently adds a value to a hyper-rectangular region and queries the total sum within a hyper-rectangular region.
+ * Internally uses 2^N algebraic Fenwick trees to correctly scale range updates.
+ */
 template <typename T = long long>
 class DynamicNDimRangeFenwickTree {
 public:
@@ -21,6 +27,12 @@ public:
         trees_.assign(num_trees, vector<T>(total_size_, T{0}));
     }
 
+    /**
+     * @brief Adds a value to a hyper-rectangular bounding box.
+     * @param x_coords 0-based starting indices (lower bounds).
+     * @param y_coords 0-based ending indices (inclusive upper bounds).
+     * @param val Value to add to the range.
+     */
     void add_range(const vector<int>& x_coords, const vector<int>& y_coords, T val) {
         if (x_coords.size() != n_ || y_coords.size() != n_) {
             throw invalid_argument("Coordinates must match dimensions");
@@ -50,6 +62,12 @@ public:
         }
     }
 
+    /**
+     * @brief Queries the sum within a hyper-rectangular bounding box.
+     * @param x_coords 0-based starting indices (lower bounds).
+     * @param y_coords 0-based ending indices (inclusive upper bounds).
+     * @return T The sum within the range.
+     */
     T query_range(const vector<int>& x_coords, const vector<int>& y_coords) const {
         if (x_coords.size() != n_ || y_coords.size() != n_) {
             throw invalid_argument("Coordinates must match dimensions");

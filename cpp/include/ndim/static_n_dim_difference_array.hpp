@@ -4,6 +4,12 @@ using namespace std;
 
 namespace ndim {
 
+/**
+ * A static N-dimensional Difference Array.
+ * Supports O(1) deferred range updates across N dimensions.
+ * Purpose: Efficiently applies many range additions offline. After all updates are queued, a sweep() method
+ * runs in O(V) time to finalize the grid, allowing subsequent O(1) point queries.
+ */
 template <typename T = long long>
 class StaticNDimDifferenceArray {
 public:
@@ -19,6 +25,12 @@ public:
         arr_.assign(total_size_, T{0});
     }
 
+    /**
+     * @brief Queues a value to be added to a hyper-rectangular bounding box.
+     * @param x_coords 0-based starting indices (lower bounds).
+     * @param y_coords 0-based ending indices (inclusive upper bounds).
+     * @param val Value to add to the range.
+     */
     void add_range(const vector<int>& x_coords, const vector<int>& y_coords, T val) {
         if (is_swept_) {
             throw runtime_error("Cannot add points after the grid has been swept.");
@@ -52,6 +64,10 @@ public:
         }
     }
 
+    /**
+     * @brief Finalizes all queued additions by sweeping across all dimensions.
+     * Must be called exactly once before any queries are made.
+     */
     void sweep() {
         for (int iter = 0; iter < 2; ++iter) {
             for (size_t d = 0; d < n_; ++d) {
@@ -67,6 +83,12 @@ public:
         is_swept_ = true;
     }
 
+    /**
+     * @brief Queries the total sum within a hyper-rectangular bounding box after sweeping.
+     * @param x_coords 0-based starting indices (lower bounds).
+     * @param y_coords 0-based ending indices (inclusive upper bounds).
+     * @return T The sum within the range.
+     */
     T query_range(const vector<int>& x_coords, const vector<int>& y_coords) const {
         if (!is_swept_) {
             throw runtime_error("Must call sweep() before querying.");
