@@ -4,7 +4,7 @@ using namespace std;
 
 namespace ndim {
 
-template <typename T = int64_t>
+template <typename T = long long>
 class DynamicNDimRangeFenwickTree {
 public:
     DynamicNDimRangeFenwickTree(const vector<int>& dims) : dims_(dims), n_(dims.size()) {
@@ -16,7 +16,7 @@ public:
             strides_[i] = strides_[i + 1] * dims_[i + 1];
         }
         total_size_ = strides_[0] * dims_[0];
-        
+
         size_t num_trees = 1ULL << n_;
         trees_.assign(num_trees, vector<T>(total_size_, T{0}));
     }
@@ -97,7 +97,7 @@ private:
                 i += i & (-i);
             }
         }
-        
+
         size_t num_masks = 1ULL << n_;
         vector<T> mask_vals(num_masks);
         for (size_t mask = 0; mask < num_masks; ++mask) {
@@ -109,7 +109,7 @@ private:
             }
             mask_vals[mask] = v;
         }
-        
+
         for (size_t mask = 0; mask < num_masks; ++mask) {
             vector<size_t> current_indices(n_, 0);
             while (true) {
@@ -118,7 +118,7 @@ private:
                     idx += dim_indices[d][current_indices[d]];
                 }
                 trees_[mask][idx] += mask_vals[mask];
-                
+
                 size_t d = 0;
                 for (; d < n_; ++d) {
                     current_indices[d]++;
@@ -140,7 +140,7 @@ private:
             }
             if (dim_indices[d].empty()) return 0;
         }
-        
+
         T total = 0;
         size_t num_masks = 1ULL << n_;
         for (size_t mask = 0; mask < num_masks; ++mask) {
@@ -152,7 +152,7 @@ private:
                     idx += dim_indices[d][current_indices[d]];
                 }
                 sum_val += trees_[mask][idx];
-                
+
                 size_t d = 0;
                 for (; d < n_; ++d) {
                     current_indices[d]++;
@@ -161,7 +161,7 @@ private:
                 }
                 if (d == n_) break;
             }
-            
+
             T mult = 1;
             for (size_t d = 0; d < n_; ++d) {
                 if (!((mask >> d) & 1)) {

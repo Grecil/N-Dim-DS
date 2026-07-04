@@ -3,7 +3,7 @@
 
 namespace ndim {
 
-template <typename T = int64_t>
+template <typename T = long long>
 class DynamicNDimDiffFenwickTree {
 public:
     DynamicNDimDiffFenwickTree(const vector<int>& dims) : n_(dims.size()), tree_(dims), dims_(dims) {}

@@ -4,7 +4,7 @@ using namespace std;
 
 namespace ndim {
 
-template <typename T = int64_t, typename Func = function<T(T, T)>>
+template <typename T = long long, typename Func = function<T(T, T)>>
 class DynamicNDimSegTree {
 public:
     DynamicNDimSegTree(const vector<int>& dims, Func func, T default_val)
@@ -83,7 +83,7 @@ public:
         if (x_coords.size() != n_ || y_coords.size() != n_) {
             throw invalid_argument("Coordinates must match dimensions");
         }
-        
+
         vector<vector<size_t>> dim_nodes(n_);
         for (size_t d = 0; d < n_; ++d) {
             if (x_coords[d] > y_coords[d]) return default_;

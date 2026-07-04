@@ -4,7 +4,7 @@ using namespace std;
 
 namespace ndim {
 
-template <typename T = int64_t>
+template <typename T = long long>
 class DynamicNDimFenwickTree {
 public:
     DynamicNDimFenwickTree(const vector<int>& dims) : dims_(dims), n_(dims.size()) {
@@ -31,7 +31,7 @@ public:
                 i += i & (-i);
             }
         }
-        
+
         vector<size_t> current_indices(n_, 0);
         while (true) {
             size_t idx = 0;
@@ -39,7 +39,7 @@ public:
                 idx += dim_indices[d][current_indices[d]];
             }
             arr_[idx] += val;
-            
+
             size_t d = 0;
             for (; d < n_; ++d) {
                 current_indices[d]++;
@@ -60,7 +60,7 @@ public:
             }
             if (dim_indices[d].empty()) return 0;
         }
-        
+
         T res = 0;
         vector<size_t> current_indices(n_, 0);
         while (true) {
@@ -69,7 +69,7 @@ public:
                 idx += dim_indices[d][current_indices[d]];
             }
             res += arr_[idx];
-            
+
             size_t d = 0;
             for (; d < n_; ++d) {
                 current_indices[d]++;

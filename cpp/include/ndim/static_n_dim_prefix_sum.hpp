@@ -4,7 +4,7 @@ using namespace std;
 
 namespace ndim {
 
-template <typename T = int64_t>
+template <typename T = long long>
 class StaticNDimPrefixSum {
 public:
     StaticNDimPrefixSum(const vector<int>& dims) : dims_(dims), n_(dims.size()), is_swept_(false) {
