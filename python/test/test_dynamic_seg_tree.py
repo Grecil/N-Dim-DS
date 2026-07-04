@@ -2,7 +2,7 @@ import itertools
 import math
 import random
 
-from pure.dynamic_n_dim_seg_tree import DynamicNDimSegTree
+from dynamic_n_dim_seg_tree import DynamicNDimSegTree
 
 
 def test_dynamic_seg_tree_2d():

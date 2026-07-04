@@ -4,24 +4,22 @@ A polyglot collection of optimized N-dimensional data structures, focused on mem
 
 ## Architecture & Ecosystems
 
-This repository is designed as a **Polyglot Monorepo** to cater to three distinct development ecosystems:
+This repository is designed as a **Polyglot Monorepo** to cater to two distinct development ecosystems:
 1. **Pure Python** (General development and scripting)
-2. **NumPy Python** (Data science and heavy matrix computations) - *Coming soon*
-3. **C++ Templates** (Competitive programming and native performance) - *Coming soon*
+2. **C++ Templates** (Competitive programming and native performance) - *Coming soon*
 
 ## Directory Structure
 
 - `python/`: Contains all Python implementations managed by `uv`.
-  - `src/pure/`: Native Python implementations relying on standard libraries.
-  - `src/numpy_impl/`: NumPy-accelerated implementations (planned).
+  - `src/`: Native Python implementations relying on standard libraries.
   - `test/`: Comprehensive `pytest` suite including 5D stress tests.
 - `cpp/`: Contains C++ implementations (planned).
   - `include/`: Header-only (`.hpp`) recursive template algorithms for easy copy-pasting.
   - `test/`: Catch2 unit tests via CMake.
 
-## Data Structures (Python Pure)
+## Data Structures (Python)
 
-The following algorithms are currently available in the `python/src/pure/` directory:
+The following algorithms are currently available in the `python/src/` directory:
 
 ### Static Structures
 - **Static N-Dim Prefix Sum**: An N-dimensional grid optimized for offline point updates followed by rapid range queries.

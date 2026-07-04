@@ -1,7 +1,7 @@
 import itertools
 import random
 
-from pure.dynamic_n_dim_diff_fenwick_tree import DynamicNDimDiffFenwickTree
+from dynamic_n_dim_diff_fenwick_tree import DynamicNDimDiffFenwickTree
 
 
 def test_dynamic_diff_fenwick_2d():
