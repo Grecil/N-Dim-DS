@@ -2,17 +2,17 @@ class StaticNDimDifferenceArray:
     def __init__(self, dims):
         """
         Initializes an N-dimensional grid of zeros with the specified dimensions.
-        
+
         Args:
             dims (iterable of int): The size of the grid in each dimension.
         """
         self.n = len(dims)
         self.dims = tuple(dims)
-        
+
         self.strides = [1] * self.n
         for i in range(self.n - 2, -1, -1):
             self.strides[i] = self.strides[i + 1] * self.dims[i + 1]
-            
+
         self.total_size = self.strides[0] * self.dims[0]
         self.arr = [0] * self.total_size
         self.is_swept = False
@@ -21,7 +21,7 @@ class StaticNDimDifferenceArray:
         """
         Adds a value to all elements within an N-dimensional bounding box.
         This operation is deferred and will not be queryable until sweep() is called.
-        
+
         Args:
             x_coords (iterable of int): 0-based starting indices of the bounding box for each dimension.
             y_coords (iterable of int): 0-based ending indices (inclusive) of the bounding box.
@@ -29,7 +29,7 @@ class StaticNDimDifferenceArray:
         """
         if self.is_swept:
             raise RuntimeError("Cannot add after sweep.")
-            
+
         for mask in range(1 << self.n):
             idx = 0
             sign = 1
@@ -45,7 +45,7 @@ class StaticNDimDifferenceArray:
                 else:
                     c = x_coords[d]
                     idx += c * self.strides[d]
-                    
+
             if valid:
                 self.arr[idx] += sign * val
 
@@ -67,17 +67,17 @@ class StaticNDimDifferenceArray:
     def query_range(self, x_coords, y_coords):
         """
         Calculates the sum of all elements within an N-dimensional bounding box.
-        
+
         Args:
             x_coords (iterable of int): 0-based starting indices of the bounding box.
             y_coords (iterable of int): 0-based ending indices (inclusive) of the bounding box.
-            
+
         Returns:
             int or float: The sum of the elements in the specified range.
         """
         if not self.is_swept:
             raise RuntimeError("Must sweep before query.")
-            
+
         ans = 0
         for mask in range(1 << self.n):
             idx = 0
@@ -94,7 +94,7 @@ class StaticNDimDifferenceArray:
                 else:
                     c = y_coords[d]
                     idx += c * self.strides[d]
-                    
+
             if valid:
                 ans += sign * self.arr[idx]
         return ans

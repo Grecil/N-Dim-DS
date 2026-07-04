@@ -1,14 +1,15 @@
 import itertools
 
+
 class DynamicNDimRangeFenwickTree:
     def __init__(self, dims):
         """
-        Initializes an N-dimensional Fenwick Tree capable of processing BOTH 
+        Initializes an N-dimensional Fenwick Tree capable of processing BOTH
         dynamic range updates and dynamic range queries in logarithmic time.
-        
-        This relies on the "2^N Algebraic Expansion Trick", maintaining 2^N 
+
+        This relies on the "2^N Algebraic Expansion Trick", maintaining 2^N
         virtual trees packed tightly into a single array to compute spatial volumes.
-        
+
         Args:
             dims (iterable of int): The strict maximum size of the grid in each dimension.
                                     Memory footprint is O(2^N * D_0 * D_1 * ... * D_n).
@@ -16,11 +17,11 @@ class DynamicNDimRangeFenwickTree:
         self.n = len(dims)
         self.dims = tuple(dims)
         self.num_masks = 1 << self.n
-        
+
         self.strides = [1] * self.n
         for i in range(self.n - 2, -1, -1):
             self.strides[i] = self.strides[i + 1] * self.dims[i + 1]
-            
+
         self.total_size = self.strides[0] * self.dims[0]
         # We store 2^N algebraic states per coordinate
         self.arr = [[0] * self.num_masks for _ in range(self.total_size)]
@@ -47,7 +48,7 @@ class DynamicNDimRangeFenwickTree:
                 idx_list.append((i - 1) * self.strides[d])
                 i += i & (-i)
             dim_indices.append(idx_list)
-            
+
         for offsets in itertools.product(*dim_indices):
             idx = sum(offsets)
             for mask in range(self.num_masks):
@@ -56,7 +57,7 @@ class DynamicNDimRangeFenwickTree:
     def add_range(self, x_coords, y_coords, val):
         """
         Dynamically adds a value to all elements within an N-dimensional bounding box.
-        
+
         Args:
             x_coords (iterable of int): 0-based starting indices (lower bounds).
             y_coords (iterable of int): 0-based ending indices (inclusive upper bounds).
@@ -66,7 +67,7 @@ class DynamicNDimRangeFenwickTree:
             p_coords = [0] * self.n
             sign = 1
             valid = True
-            
+
             for d in range(self.n):
                 if (mask >> d) & 1:
                     c = y_coords[d] + 1
@@ -77,18 +78,18 @@ class DynamicNDimRangeFenwickTree:
                     sign = -sign
                 else:
                     p_coords[d] = x_coords[d]
-                    
+
             if valid:
                 self._add_point(p_coords, sign * val)
 
     def query_prefix(self, coords):
         """
-        Calculates the spatial volume from the origin up to the given coordinates 
+        Calculates the spatial volume from the origin up to the given coordinates
         using the 2^N algebraic expansion.
         """
         # Clamp coordinates to ensure we don't calculate volume outside the grid bounds
         clamped_coords = [min(coords[d], self.dims[d] - 1) for d in range(self.n)]
-        
+
         dim_indices = []
         for d in range(self.n):
             idx_list = []
@@ -97,14 +98,14 @@ class DynamicNDimRangeFenwickTree:
                 idx_list.append((i - 1) * self.strides[d])
                 i -= i & (-i)
             dim_indices.append(idx_list)
-            
+
         # Accumulate the prefix sums for all 2^N virtual trees
         tree_sums = [0] * self.num_masks
         for offsets in itertools.product(*dim_indices):
             idx = sum(offsets)
             for mask in range(self.num_masks):
                 tree_sums[mask] += self.arr[idx][mask]
-                
+
         # Reconstruct the true prefix sum using the algebraic multipliers
         res = 0
         for mask in range(self.num_masks):
@@ -112,19 +113,19 @@ class DynamicNDimRangeFenwickTree:
             for d in range(self.n):
                 if not ((mask >> d) & 1):
                     # (X_d + 1) in 1-based math translates to (clamped + 2)
-                    multiplier *= (clamped_coords[d] + 2)
+                    multiplier *= clamped_coords[d] + 2
             res += multiplier * tree_sums[mask]
-            
+
         return res
 
     def query_range(self, x_coords, y_coords):
         """
         Calculates the dynamic sum of all elements within an N-dimensional bounding box.
-        
+
         Args:
             x_coords (iterable of int): 0-based starting indices.
             y_coords (iterable of int): 0-based ending indices (inclusive).
-            
+
         Returns:
             int or float: The dynamic sum within the specified volume.
         """
@@ -133,7 +134,7 @@ class DynamicNDimRangeFenwickTree:
             q_coords = [0] * self.n
             sign = 1
             valid = True
-            
+
             for d in range(self.n):
                 if (mask >> d) & 1:
                     c = x_coords[d] - 1
@@ -144,8 +145,8 @@ class DynamicNDimRangeFenwickTree:
                     sign = -sign
                 else:
                     q_coords[d] = y_coords[d]
-                    
+
             if valid:
                 ans += sign * self.query_prefix(q_coords)
-                
+
         return ans
