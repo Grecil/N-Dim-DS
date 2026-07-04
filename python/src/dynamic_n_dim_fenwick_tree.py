@@ -1,6 +1,5 @@
 import itertools
 
-
 class DynamicNDimFenwickTree:
     def __init__(self, dims):
         """
@@ -37,9 +36,8 @@ class DynamicNDimFenwickTree:
         dim_indices = []
         for d in range(self.n):
             idx_list = []
-            i = coords[d] + 1  # Shift to 1-based index for Fenwick bitwise math
+            i = coords[d] + 1
             while i <= self.dims[d]:
-                # Subtract 1 to safely map back to the unpadded 0-based flat array
                 idx_list.append((i - 1) * self.strides[d])
                 i += i & (-i)
             dim_indices.append(idx_list)

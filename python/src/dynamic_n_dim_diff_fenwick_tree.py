@@ -1,6 +1,5 @@
 import itertools
 
-
 class DynamicNDimDiffFenwickTree:
     def __init__(self, dims):
         """
@@ -34,7 +33,7 @@ class DynamicNDimDiffFenwickTree:
         dim_indices = []
         for d in range(self.n):
             idx_list = []
-            i = coords[d] + 1  # Shift to 1-based index for bitwise math
+            i = coords[d] + 1
             while i <= self.dims[d]:
                 idx_list.append((i - 1) * self.strides[d])
                 i += i & (-i)
@@ -61,7 +60,6 @@ class DynamicNDimDiffFenwickTree:
             for d in range(self.n):
                 if (mask >> d) & 1:
                     c = y_coords[d] + 1
-                    # If the marker falls entirely outside the grid, it can be safely discarded
                     if c >= self.dims[d]:
                         valid = False
                         break
@@ -89,7 +87,6 @@ class DynamicNDimDiffFenwickTree:
         for d in range(self.n):
             idx_list = []
             i = coords[d] + 1
-            # Clamping prevents out-of-bounds queries from crashing the structure
             i = min(i, self.dims[d])
             while i > 0:
                 idx_list.append((i - 1) * self.strides[d])

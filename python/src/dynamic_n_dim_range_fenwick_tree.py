@@ -1,6 +1,5 @@
 import itertools
 
-
 class DynamicNDimRangeFenwickTree:
     def __init__(self, dims):
         """
@@ -23,20 +22,17 @@ class DynamicNDimRangeFenwickTree:
             self.strides[i] = self.strides[i + 1] * self.dims[i + 1]
 
         self.total_size = self.strides[0] * self.dims[0]
-        # We store 2^N algebraic states per coordinate
         self.arr = [[0] * self.num_masks for _ in range(self.total_size)]
 
     def _add_point(self, coords, val):
         """
         Internal method. Updates all 2^N algebraic states at a specific point.
         """
-        # Precompute the 2^N algebraic terms to store for this marker
         mask_vals = [0] * self.num_masks
         for mask in range(self.num_masks):
             v = val
             for d in range(self.n):
                 if (mask >> d) & 1:
-                    # -C_d (using 1-based coordinates for the math)
                     v *= -(coords[d] + 1)
             mask_vals[mask] = v
 
@@ -87,7 +83,6 @@ class DynamicNDimRangeFenwickTree:
         Calculates the spatial volume from the origin up to the given coordinates
         using the 2^N algebraic expansion.
         """
-        # Clamp coordinates to ensure we don't calculate volume outside the grid bounds
         clamped_coords = [min(coords[d], self.dims[d] - 1) for d in range(self.n)]
 
         dim_indices = []
@@ -99,20 +94,17 @@ class DynamicNDimRangeFenwickTree:
                 i -= i & (-i)
             dim_indices.append(idx_list)
 
-        # Accumulate the prefix sums for all 2^N virtual trees
         tree_sums = [0] * self.num_masks
         for offsets in itertools.product(*dim_indices):
             idx = sum(offsets)
             for mask in range(self.num_masks):
                 tree_sums[mask] += self.arr[idx][mask]
 
-        # Reconstruct the true prefix sum using the algebraic multipliers
         res = 0
         for mask in range(self.num_masks):
             multiplier = 1
             for d in range(self.n):
                 if not ((mask >> d) & 1):
-                    # (X_d + 1) in 1-based math translates to (clamped + 2)
                     multiplier *= clamped_coords[d] + 2
             res += multiplier * tree_sums[mask]
 
