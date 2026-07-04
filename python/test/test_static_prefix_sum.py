@@ -2,7 +2,7 @@ import itertools
 import random
 
 import pytest
-from static_n_dim_prefix_sum import StaticNDimPrefixSum
+from ndim_ds import StaticNDimPrefixSum
 
 
 def test_static_prefix_sum_2d():

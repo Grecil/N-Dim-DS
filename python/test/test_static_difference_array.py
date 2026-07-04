@@ -2,7 +2,7 @@ import itertools
 import random
 
 import pytest
-from static_n_dim_difference_array import StaticNDimDifferenceArray
+from ndim_ds import StaticNDimDifferenceArray
 
 
 def test_static_difference_array_2d():

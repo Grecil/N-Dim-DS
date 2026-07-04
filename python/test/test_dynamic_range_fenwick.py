@@ -1,7 +1,7 @@
 import itertools
 import random
 
-from dynamic_n_dim_range_fenwick_tree import DynamicNDimRangeFenwickTree
+from ndim_ds import DynamicNDimRangeFenwickTree
 
 
 def test_dynamic_range_fenwick_2d():
