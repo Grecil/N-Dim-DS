@@ -1,5 +1,6 @@
 import itertools
 
+
 class DynamicNDimRangeFenwickTree:
     def __init__(self, dims):
         """

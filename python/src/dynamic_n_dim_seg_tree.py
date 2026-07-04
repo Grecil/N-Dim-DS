@@ -1,5 +1,6 @@
 import itertools
 
+
 class DynamicNDimSegTree:
     def __init__(self, dims, func=min, default=float("inf")):
         """
@@ -82,18 +83,18 @@ class DynamicNDimSegTree:
             if x_coords[d] > y_coords[d]:
                 return self.default
 
-            l = x_coords[d] + self.dims[d]
+            left_idx = x_coords[d] + self.dims[d]
             r = y_coords[d] + self.dims[d] + 1
             nodes = []
 
-            while l < r:
-                if l % 2 == 1:
-                    nodes.append(l * self.strides[d])
-                    l += 1
+            while left_idx < r:
+                if left_idx % 2 == 1:
+                    nodes.append(left_idx * self.strides[d])
+                    left_idx += 1
                 if r % 2 == 1:
                     r -= 1
                     nodes.append(r * self.strides[d])
-                l >>= 1
+                left_idx >>= 1
                 r >>= 1
 
             dim_nodes.append(nodes)

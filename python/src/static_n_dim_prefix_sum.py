@@ -62,8 +62,10 @@ class StaticNDimPrefixSum:
         Uses the Inclusion-Exclusion principle over the $2^N$ vertices of the hyper-rectangle.
 
         Args:
-            x_coords (iterable of int): 0-based starting indices (lower bounds) of the bounding box.
-            y_coords (iterable of int): 0-based ending indices (inclusive upper bounds) of the bounding box.
+            x_coords (iterable of int): 0-based starting indices (lower bounds)
+                of the bounding box.
+            y_coords (iterable of int): 0-based ending indices (inclusive upper bounds)
+                of the bounding box.
 
         Returns:
             int or float: The sum of the elements within the specified bounding box.

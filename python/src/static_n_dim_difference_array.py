@@ -23,7 +23,8 @@ class StaticNDimDifferenceArray:
         This operation is deferred and will not be queryable until sweep() is called.
 
         Args:
-            x_coords (iterable of int): 0-based starting indices of the bounding box for each dimension.
+            x_coords (iterable of int): 0-based starting indices of the bounding box
+                for each dimension.
             y_coords (iterable of int): 0-based ending indices (inclusive) of the bounding box.
             val (int or float): The value to add to the specified range.
         """
