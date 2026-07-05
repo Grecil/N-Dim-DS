@@ -1,8 +1,8 @@
 # N-Dimensional Data Structures
 
-A polyglot library providing generalized, highly optimized N-dimensional data structures for both Python and C++.
+A polyglot library providing generalized N-dimensional data structures for both Python and C++.
 
-Whether you are working in Python for data science and backend engineering, or you need highly-optimized header-only C++ templates to copy-paste into competitive programming platforms like Codeforces and LeetCode, this repository has you covered.
+This repository provides structures for Python projects, as well as header-only C++ templates for competitive programming platforms like Codeforces and LeetCode.
 
 ## Data Structures Included
 
@@ -28,7 +28,7 @@ Whether you are working in Python for data science and backend engineering, or y
 
 ## Python Usage
 
-The pure-Python package uses 1D list-flattening mathematics under the hood to ensure maximum performance and cache locality without relying on heavy C-extensions or Numpy.
+The pure-Python package uses 1D list-flattening mathematics under the hood to improve cache locality without relying on C-extensions or Numpy.
 
 ### Installation
 The package is officially available on PyPI:
@@ -66,7 +66,7 @@ total_dynamic = tree.query_range([0, 0, 0], [3, 3, 3])
 
 ## C++ (Competitive Programming) Usage
 
-The `cpp/include/ndim/` directory contains highly optimized, header-only C++23 templates formatted for competitive programming. They use `#include <bits/stdc++.h>` and `using namespace std;`.
+The `cpp/include/ndim/` directory contains header-only C++23 templates formatted for competitive programming. They use `#include <bits/stdc++.h>` and `using namespace std;`.
 
 ### Example
 ```cpp
@@ -87,6 +87,6 @@ int64_t val = tree.query_range({0, 0, 0}, {3, 3, 3});
 
 ## Testing
 
-Both ecosystems are rigorously tested with aggressive $10^3$ iteration stress tests across $5$-dimensional constraints.
+Both implementations are tested with randomized operations across 5-dimensional constraints.
 - **Python**: Run `uv run pytest test/` from the `python/` directory.
 - **C++**: Compile the files in `cpp/test/` using `g++ -std=c++23` and run the resulting executables.

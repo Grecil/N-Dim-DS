@@ -1,6 +1,6 @@
 # N-Dimensional Data Structures (Python)
 
-A pure-Python library providing generalized, highly optimized N-dimensional data structures. These structures use 1D list-flattening mathematics under the hood to ensure maximum performance and cache locality without relying on heavy C-extensions or Numpy.
+A pure-Python library providing generalized N-dimensional data structures. These structures use 1D list-flattening mathematics under the hood to improve cache locality without relying on C-extensions or Numpy.
 
 ## Installation
 
@@ -64,7 +64,7 @@ total_dynamic = tree.query_range([0, 0, 0], [3, 3, 3])
 
 ## Testing
 
-The codebase is rigorously tested with aggressive $10^3$ iteration stress tests across $5$-dimensional constraints using `pytest`.
+The codebase is tested with randomized operations across 5-dimensional constraints using `pytest`.
 To run tests locally from source:
 ```bash
 uv run pytest test/
